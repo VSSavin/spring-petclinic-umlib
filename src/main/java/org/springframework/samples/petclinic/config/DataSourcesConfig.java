@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 import javax.sql.DataSource;
@@ -50,17 +49,31 @@ public class DataSourcesConfig {
 		}
 		this.appDataSource = dataSource;
 
+		initDatabase(appDataSource);
 		return dataSource;
     }
 
-	@Bean
-	public DatabasePopulator resourceDatabasePopulator(DataSource appDataSource) {
+	private void initDatabase(DataSource appDataSource) {
 		ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+		String databaseType = "";
+		switch (databaseConfig.getDriverClass()) {
+			case "org.h2.Driver":
+				databaseType = "h2";
+				break;
+			case "org.postgresql.Driver":
+				databaseType = "postgres";
+				break;
+			case "org.hsqldb.jdbc.JDBCDriver":
+				databaseType = "hsqldb";
+				break;
+			case "com.mysql.jdbc.Driver":
+				databaseType = "mysql";
+				break;
+			default:
+		}
 		populator.addScripts(
-			new ClassPathResource("db/h2/schema.sql"),
-			new ClassPathResource("db/h2/data.sql"));
-		populator.setSeparator("@@");
+			new ClassPathResource(String.format("db/%s/schema.sql", databaseType)),
+			new ClassPathResource(String.format("db/%s/data.sql", databaseType)));
 		populator.execute(appDataSource);
-		return populator;
 	}
 }
