@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
 /**
  * @author Juergen Hoeller

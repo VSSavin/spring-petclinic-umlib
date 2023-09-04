@@ -19,6 +19,7 @@ package org.springframework.samples.petclinic.system;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -80,7 +81,7 @@ class CrashControllerIntegrationTests {
 	@Test
 	void testTriggerExceptionHtml() {
 		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(List.of(MediaType.TEXT_HTML));
+		headers.setAccept(Collections.singletonList((MediaType.TEXT_HTML)));
 		ResponseEntity<String> resp = rest.exchange("http://localhost:" + port + "/oups", HttpMethod.GET,
 				new HttpEntity<>(headers), String.class);
 		assertThat(resp).isNotNull();

@@ -25,8 +25,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validator;
+//import jakarta.validation.ConstraintViolation;
+//import jakarta.validation.Validator;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 /**
  * @author Michael Isvy Simple test to make sure that Bean Validation is working (useful
