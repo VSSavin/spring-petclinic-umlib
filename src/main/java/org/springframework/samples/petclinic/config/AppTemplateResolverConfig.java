@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.config;
 import com.github.vssavin.umlib.config.UmTemplateResolverConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -31,6 +32,7 @@ public class AppTemplateResolverConfig {
     public ThymeleafViewResolver appViewResolver() {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         SpringTemplateEngine templateEngine = UmTemplateResolverConfig.getSpringTemplateEngine();
+		templateEngine.addDialect(new Java8TimeDialect());
         templateEngine.addTemplateResolver(appTemplateResolver());
         viewResolver.setTemplateEngine(templateEngine);
         viewResolver.setOrder(0);
