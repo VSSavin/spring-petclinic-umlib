@@ -35,59 +35,60 @@ import java.util.Properties;
 @EnableWebSecurity
 @Import(DefaultSecurityConfig.class)
 public class ApplicationConfig {
-    private static final Logger log = LoggerFactory.getLogger(ApplicationConfig.class);
+	private static final Logger log = LoggerFactory.getLogger(ApplicationConfig.class);
 
-    @Bean
-    public UmConfigurer umConfigurer() {
-        Map<String, String[]> resourceHandlers = new HashMap<>();
-        resourceHandlers.put("/resources/css/**", new String[]{"classpath:/static/resources/css/"});
+	@Bean
+	public UmConfigurer umConfigurer() {
+		Map<String, String[]> resourceHandlers = new HashMap<>();
+		resourceHandlers.put("/resources/css/**", new String[]{"classpath:/static/resources/css/"});
 		resourceHandlers.put("/resources/fonts/**", new String[]{"classpath:/static/resources/fonts/"});
 		resourceHandlers.put("/resources/images/**", new String[]{"classpath:/static/resources/images/"});
 
-        return new UmConfigurer().successUrl("/index.html")
-                .permission(new AuthorizedUrlPermission("/index.html", Permission.ANY_USER))
-                .permission(new AuthorizedUrlPermission("/index", Permission.ANY_USER))
-                .resourceHandlers(resourceHandlers)
-                .configure();
-    }
+		return new UmConfigurer().successUrl("/index.html")
+			.permission(new AuthorizedUrlPermission("/**", Permission.USER_ADMIN))
+			.permission(new AuthorizedUrlPermission("/index.html", Permission.ANY_USER))
+			.csrf(false)
+			.resourceHandlers(resourceHandlers)
+			.configure();
+	}
 
-    @Bean
-    public FilterRegistrationBean<HiddenHttpMethodFilter> hiddenHttpMethodFilter() {
-        FilterRegistrationBean<HiddenHttpMethodFilter> filterBean =
-                new FilterRegistrationBean<>(new HiddenHttpMethodFilter());
-        filterBean.setUrlPatterns(Collections.singletonList("/*"));
-        return filterBean;
-    }
+	@Bean
+	public FilterRegistrationBean<HiddenHttpMethodFilter> hiddenHttpMethodFilter() {
+		FilterRegistrationBean<HiddenHttpMethodFilter> filterBean =
+			new FilterRegistrationBean<>(new HiddenHttpMethodFilter());
+		filterBean.setUrlPatterns(Collections.singletonList("/*"));
+		return filterBean;
+	}
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource routingDataSource,
-                                                                       DatabaseConfig databaseConfig) {
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+	@Bean
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource routingDataSource,
+																	   DatabaseConfig databaseConfig) {
+		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 
-        try {
-            em.setDataSource(routingDataSource);
-            em.setPackagesToScan("com.github.vssavin.umlib.domain", "org.springframework.samples.petclinic");
+		try {
+			em.setDataSource(routingDataSource);
+			em.setPackagesToScan("com.github.vssavin.umlib.domain", "org.springframework.samples.petclinic");
 
-            em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-            String hibernateDialect = databaseConfig.getDialect();
+			em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+			String hibernateDialect = databaseConfig.getDialect();
 
-            Properties additionalProperties = new Properties();
-            additionalProperties.put("hibernate.dialect", hibernateDialect);
-            em.setJpaProperties(additionalProperties);
-        } catch (Exception e) {
-            log.error("Creating LocalContainerEntityManagerFactoryBean error!", e);
-        }
+			Properties additionalProperties = new Properties();
+			additionalProperties.put("hibernate.dialect", hibernateDialect);
+			em.setJpaProperties(additionalProperties);
+		} catch (Exception e) {
+			log.error("Creating LocalContainerEntityManagerFactoryBean error!", e);
+		}
 
-        return em;
-    }
+		return em;
+	}
 
-    @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
-        return new JpaTransactionManager(emf);
-    }
+	@Bean
+	public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+		return new JpaTransactionManager(emf);
+	}
 
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-        return new PersistenceExceptionTranslationPostProcessor();
-    }
+	@Bean
+	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+		return new PersistenceExceptionTranslationPostProcessor();
+	}
 }
