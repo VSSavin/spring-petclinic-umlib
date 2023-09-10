@@ -138,6 +138,12 @@
       <artifactId>jakarta.xml.bind-api</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>com.github.vssavin</groupId>
+      <artifactId>um-lib</artifactId>
+      <version>3.0.0-SNAPSHOT</version>
+    </dependency>
+
   </dependencies>
 
   <dependencyManagement>
