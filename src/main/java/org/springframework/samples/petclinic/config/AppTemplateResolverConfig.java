@@ -16,27 +16,28 @@ import org.thymeleaf.templatemode.TemplateMode;
 @Configuration
 public class AppTemplateResolverConfig {
 
-    @Bean
-    public SpringResourceTemplateResolver appTemplateResolver() {
-        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-        templateResolver.setPrefix("classpath:/templates/");
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setCharacterEncoding("UTF-8");
-        templateResolver.setOrder(0);
-        templateResolver.setCheckExistence(true);
-        return templateResolver;
-    }
+	@Bean
+	public SpringResourceTemplateResolver appTemplateResolver() {
+		SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+		templateResolver.setPrefix("classpath:/templates/");
+		templateResolver.setSuffix(".html");
+		templateResolver.setTemplateMode(TemplateMode.HTML);
+		templateResolver.setCharacterEncoding("UTF-8");
+		templateResolver.setOrder(0);
+		templateResolver.setCheckExistence(true);
+		return templateResolver;
+	}
 
-    @Bean
-    public ThymeleafViewResolver appViewResolver() {
-        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-        SpringTemplateEngine templateEngine = UmTemplateResolverConfig.getSpringTemplateEngine();
+	@Bean
+	public ThymeleafViewResolver appViewResolver() {
+		ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+		SpringTemplateEngine templateEngine = UmTemplateResolverConfig.getSpringTemplateEngine();
 		templateEngine.addDialect(new Java8TimeDialect());
-        templateEngine.addTemplateResolver(appTemplateResolver());
-        viewResolver.setTemplateEngine(templateEngine);
-        viewResolver.setOrder(0);
-        viewResolver.setCharacterEncoding("UTF-8");
-        return viewResolver;
-    }
+		templateEngine.addTemplateResolver(appTemplateResolver());
+		viewResolver.setTemplateEngine(templateEngine);
+		viewResolver.setOrder(0);
+		viewResolver.setCharacterEncoding("UTF-8");
+		return viewResolver;
+	}
+
 }

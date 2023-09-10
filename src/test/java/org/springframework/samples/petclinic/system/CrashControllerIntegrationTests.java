@@ -57,9 +57,9 @@ import org.springframework.http.ResponseEntity;
 		properties = { "server.error.include-message=ALWAYS", "management.endpoints.enabled-by-default=false" })
 class CrashControllerIntegrationTests {
 
-	@SpringBootApplication(exclude = {SecurityAutoConfiguration.class, ManagementWebSecurityAutoConfiguration.class,
-		DataSourceAutoConfiguration.class,
-			DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class })
+	@SpringBootApplication(exclude = { SecurityAutoConfiguration.class, ManagementWebSecurityAutoConfiguration.class,
+			DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class,
+			HibernateJpaAutoConfiguration.class })
 	static class TestConfiguration {
 
 	}

@@ -19,39 +19,42 @@ import javax.sql.DataSource;
 @Configuration
 @Import(UmDataSourceConfig.class)
 public class DataSourcesConfig {
+
 	private static final Logger log = LoggerFactory.getLogger(DataSourcesConfig.class);
+
 	private final DatabaseConfig databaseConfig;
-    private DataSource appDataSource;
+
+	private DataSource appDataSource;
 
 	@Autowired
 	public DataSourcesConfig(DatabaseConfig databaseConfig) {
 		this.databaseConfig = databaseConfig;
 	}
 
-    @Bean
-    public DataSource appDataSource() {
+	@Bean
+	public DataSource appDataSource() {
 		if (this.appDataSource != null) {
 			return this.appDataSource;
 		}
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		try {
 			dataSource.setDriverClassName(databaseConfig.getDriverClass());
-			String url = databaseConfig.getUrl() + "/"
-				+ databaseConfig.getName();
+			String url = databaseConfig.getUrl() + "/" + databaseConfig.getName();
 			if (databaseConfig.getDriverClass().equals("org.h2.Driver")) {
 				url += ";" + databaseConfig.getAdditionalParams();
 			}
 			dataSource.setUrl(url);
 			dataSource.setUsername(databaseConfig.getUser());
 			dataSource.setPassword(databaseConfig.getPassword());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Creating datasource error: ", e);
 		}
 		this.appDataSource = dataSource;
 
 		initDatabase(appDataSource);
 		return dataSource;
-    }
+	}
 
 	private void initDatabase(DataSource appDataSource) {
 		ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
@@ -71,9 +74,9 @@ public class DataSourcesConfig {
 				break;
 			default:
 		}
-		populator.addScripts(
-			new ClassPathResource(String.format("db/%s/schema.sql", databaseType)),
-			new ClassPathResource(String.format("db/%s/data.sql", databaseType)));
+		populator.addScripts(new ClassPathResource(String.format("db/%s/schema.sql", databaseType)),
+				new ClassPathResource(String.format("db/%s/data.sql", databaseType)));
 		populator.execute(appDataSource);
 	}
+
 }
