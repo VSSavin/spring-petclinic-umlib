@@ -48,11 +48,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @DisabledInNativeImage
 class MySqlIntegrationTests {
 
-	@SpringBootApplication(exclude = {SecurityAutoConfiguration.class, ManagementWebSecurityAutoConfiguration.class})
-	static class TestConfiguration {
-
-	}
-
 	@ServiceConnection
 	@Container
 	static MySQLContainer<?> container = new MySQLContainer<>("mysql:5.7");

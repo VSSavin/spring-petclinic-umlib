@@ -56,11 +56,6 @@ import org.testcontainers.DockerClientFactory;
 @DisabledInNativeImage
 public class PostgresIntegrationTests {
 
-	@SpringBootApplication(exclude = {SecurityAutoConfiguration.class, ManagementWebSecurityAutoConfiguration.class})
-	static class TestConfiguration {
-
-	}
-
 	@LocalServerPort
 	int port;
 
