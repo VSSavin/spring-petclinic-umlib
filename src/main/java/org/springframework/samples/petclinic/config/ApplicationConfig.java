@@ -48,9 +48,10 @@ public class ApplicationConfig {
 		resourceHandlers.put("/resources/fonts/**", new String[] { "classpath:/static/resources/fonts/" });
 		resourceHandlers.put("/resources/images/**", new String[] { "classpath:/static/resources/images/" });
 
-		return new UmConfigurer().successUrl("/index.html")
+		return new UmConfigurer().successUrl("/")
 			.permission(new AuthorizedUrlPermission("/**", Permission.USER_ADMIN))
-			.permission(new AuthorizedUrlPermission("/index.html", Permission.ANY_USER))
+			.permission(new AuthorizedUrlPermission("/", Permission.ANY_USER))
+			.permission(new AuthorizedUrlPermission("/resources/**", Permission.ANY_USER))
 			.csrf(false)
 			.resourceHandlers(resourceHandlers)
 			.configure();
