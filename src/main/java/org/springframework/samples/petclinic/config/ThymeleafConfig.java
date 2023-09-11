@@ -20,7 +20,7 @@ public class ThymeleafConfig {
 		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
 		templateEngine.addDialect(new Java8TimeDialect());
 		templateEngine.addTemplateResolver(appTemplateResolver());
-		return new SpringTemplateEngine();
+		return templateEngine;
 	}
 
 	@Bean
