@@ -29,6 +29,9 @@ import org.junit.jupiter.api.condition.DisabledInNativeImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.samples.petclinic.config.ApplicationConfig;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 /**
@@ -37,7 +40,9 @@ import org.springframework.test.web.servlet.MockMvc;
  * @author Colin But
  */
 @WebMvcTest(VisitController.class)
+@Import(ApplicationConfig.class)
 @DisabledInNativeImage
+@WithMockUser
 class VisitControllerTests {
 
 	private static final int TEST_OWNER_ID = 1;
