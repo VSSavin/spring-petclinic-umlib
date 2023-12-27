@@ -67,6 +67,8 @@ public class ApplicationConfig {
 		usmanConfigurer.permission(new AuthorizedUrlPermission("/index.html", Permission.ANY_USER))
 			.permission(new AuthorizedUrlPermission("/index", Permission.ANY_USER));
 
+		usmanConfigurer.csrf(false);
+
 		return usmanConfigurer.configure();
 	}
 
