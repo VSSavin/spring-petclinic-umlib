@@ -60,7 +60,7 @@ public class ApplicationConfig {
 
 	@Bean
 	public UsmanWebstaticConfigurer usmanConfigurer(UsmanUrlsConfigurer urlsConfigurer, OAuth2Config oAuth2Config,
-													List<PermissionPathsContainer> permissionPathsContainerList) {
+			List<PermissionPathsContainer> permissionPathsContainerList) {
 
 		UsmanWebstaticConfigurer usmanConfigurer = new UsmanWebstaticConfigurer(urlsConfigurer, oAuth2Config,
 				permissionPathsContainerList);
