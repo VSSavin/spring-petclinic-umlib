@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.config;
 
+import com.github.vssavin.usman_webstatic_core.UsmanWebstaticConfigurer;
 import com.github.vssavin.usmancore.config.*;
 import com.github.vssavin.usmancore.spring6.config.DefaultSecurityConfig;
 import jakarta.persistence.EntityManagerFactory;
@@ -58,14 +59,16 @@ public class ApplicationConfig {
 	}
 
 	@Bean
-	public UsmanConfigurer usmanConfigurer(UsmanUrlsConfigurer urlsConfigurer, OAuth2Config oAuth2Config,
-			List<PermissionPathsContainer> permissionPathsContainerList) {
+	public UsmanWebstaticConfigurer usmanConfigurer(UsmanUrlsConfigurer urlsConfigurer, OAuth2Config oAuth2Config,
+													List<PermissionPathsContainer> permissionPathsContainerList) {
 
-		UsmanConfigurer usmanConfigurer = new UsmanConfigurer(urlsConfigurer, oAuth2Config,
+		UsmanWebstaticConfigurer usmanConfigurer = new UsmanWebstaticConfigurer(urlsConfigurer, oAuth2Config,
 				permissionPathsContainerList);
 
 		usmanConfigurer.permission(new AuthorizedUrlPermission("/index.html", Permission.ANY_USER))
 			.permission(new AuthorizedUrlPermission("/index", Permission.ANY_USER));
+
+		usmanConfigurer.defaultLanguage("en").loginPageTitle("Spring petclinic service");
 
 		usmanConfigurer.csrf(false);
 
