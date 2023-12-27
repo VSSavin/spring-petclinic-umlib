@@ -42,8 +42,9 @@ public class PetclinicPathsContainer implements PermissionPathsContainer {
 
 	private List<AuthorizedUrlPermission> getAnyUserPaths() {
 		List<AuthorizedUrlPermission> paths = new ArrayList<>();
+		paths.add(new AuthorizedUrlPermission("/oups", Permission.ANY_USER));
 		paths.add(new AuthorizedUrlPermission("/resources/css/**", Permission.ANY_USER));
-		paths.add(new AuthorizedUrlPermission("/resources//fonts/**", Permission.ANY_USER));
+		paths.add(new AuthorizedUrlPermission("/resources/fonts/**", Permission.ANY_USER));
 		paths.add(new AuthorizedUrlPermission("/resources/images/**", Permission.ANY_USER));
 		paths.add(new AuthorizedUrlPermission("/webjars/**", Permission.ANY_USER));
 		paths.addAll(getAuthorizedPermissionsForUrl("/error", Permission.ANY_USER));
