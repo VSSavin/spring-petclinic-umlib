@@ -1,62 +1,27 @@
 package org.springframework.samples.petclinic.config;
 
 import com.github.vssavin.usman_webstatic_core.UsmanWebstaticConfigurer;
+import com.github.vssavin.usman_webstatic_starter.spring6.EntityScanPackages;
 import com.github.vssavin.usmancore.config.*;
-import com.github.vssavin.usmancore.spring6.config.DefaultSecurityConfig;
-import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.filter.HiddenHttpMethodFilter;
 
-import javax.sql.DataSource;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.Collections;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * @author vssavin on 26.12.2023.
  */
 @Configuration
-@ComponentScan({ "com.github.vssavin.usmancore.*", "com.github.vssavin.usman_webstatic.spring6.*",
-		"org.springframework.samples.petclinic.*" })
-@EnableTransactionManagement
-@EnableJpaRepositories(basePackages = { "com.github.vssavin.usmancore.*", "org.springframework.samples.petclinic.*" })
-@EnableWebSecurity
-@Import({ DefaultSecurityConfig.class })
+@ComponentScan({"org.springframework.samples.petclinic.*", "com.github.vssavin.usman_webstatic_starter.*"})
+@EnableJpaRepositories(basePackages = { "org.springframework.samples.petclinic.*" })
 public class ApplicationConfig {
 
 	private static final Logger log = LoggerFactory.getLogger(ApplicationConfig.class);
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
-	@Bean
-	public JavaMailSender emailSender() {
-		return new JavaMailSenderImpl();
-	}
 
 	@Bean
 	public UsmanWebstaticConfigurer usmanConfigurer(UsmanUrlsConfigurer urlsConfigurer, OAuth2Config oAuth2Config,
@@ -86,44 +51,9 @@ public class ApplicationConfig {
 	}
 
 	@Bean
-	public FilterRegistrationBean<HiddenHttpMethodFilter> hiddenHttpMethodFilter() {
-		FilterRegistrationBean<HiddenHttpMethodFilter> filterBean = new FilterRegistrationBean<>(
-				new HiddenHttpMethodFilter());
-		filterBean.setUrlPatterns(Collections.singletonList("/*"));
-		return filterBean;
-	}
-
-	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-			@Qualifier("routingDatasource") DataSource routingDatasource, DatabaseConfig databaseConfig) {
-		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-
-		try {
-			em.setDataSource(routingDatasource);
-			em.setPackagesToScan("com.github.vssavin.usmancore", "org.springframework.samples.petclinic.*");
-
-			em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-			String hibernateDialect = databaseConfig.getDialect();
-
-			Properties additionalProperties = new Properties();
-			additionalProperties.put("hibernate.dialect", hibernateDialect);
-			em.setJpaProperties(additionalProperties);
-		}
-		catch (Exception e) {
-			log.error("Creating LocalContainerEntityManagerFactoryBean error!", e);
-		}
-
-		return em;
-	}
-
-	@Bean
-	public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
-		return new JpaTransactionManager(emf);
-	}
-
-	@Bean
-	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-		return new PersistenceExceptionTranslationPostProcessor();
+	public EntityScanPackages petclinicEntityPackages() {
+		log.debug("Initializing usman entity packages...");
+		return () -> new String[] { "org.springframework.samples.petclinic.*" };
 	}
 
 	/**

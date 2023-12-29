@@ -14,7 +14,7 @@ import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.
  */
 @Configuration
 @Import(UsmanDataSourceConfig.class)
-public class DataSourcesConfig {
+public class PetclinicDataSourcesConfig {
 
 	private DataSource appDataSource;
 
@@ -28,7 +28,6 @@ public class DataSourcesConfig {
 				.setType(H2)
 				.setScriptEncoding("UTF-8")
 				.ignoreFailedDrops(true)
-				.addScript("com/github/vssavin/usmancore/config/init.sql")
 				.build();
 		}
 		return appDataSource;
