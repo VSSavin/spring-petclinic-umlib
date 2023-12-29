@@ -41,8 +41,14 @@
     <!-- usman dependencies -->
     <dependency>
       <groupId>com.github.vssavin</groupId>
-      <artifactId>usman-webstatic-starter-spring6</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <artifactId>usman-webstatic-starter</artifactId>
+      <version>0.0.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.github.vssavin.usman-webstatic-starter</groupId>
+          <artifactId>usman-webstatic-starter-spring5</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
           <groupId>org.springframework.security</groupId>
@@ -315,6 +321,10 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
+    </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
     </repository>
   </repositories>
 
